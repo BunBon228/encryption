@@ -4,13 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шифрование</title>
+
+    <style>
+        input{
+            width: 300px;
+        }
+    </style>
+
 </head>
 <body>
+
+    <h1>Шифрование методом перестановки (Шифр Цезаря) Начальный шаг равен двум</h1>
     
+    
+    <input type="text" class="input_value" placeholder="Введите текст для шифрования">
+    <button id="on_encry">Зашифровать</button>
+    <p class="output_value"></p>
+
+    <br><br>
+
+    <input type="text" class="input_value_1" placeholder="Введите текст для расшифровки">
+    <button id="no_encry">Расшифровать</button>
+    <p class="output_value_1"></p>
+
+    <br><br>
+
+    <input type="number" class="input_change_step" placeholder="Расстояние шага перестановки">
+    <button id="step_change">Изменить</button>
+
 
     <script>
 
+        window.addEventListener('load', function(){
 
+            const 
+                inputEncry = document.querySelector('.input_value'),
+                inputNoencry = document.querySelector('.input_value_1'),
+                inputChangeStep = document.querySelector('.input_change_step'),
+
+                btnEncry = document.querySelector('#on_encry'),
+                btnNoencry = document.querySelector('#no_encry'),
+                btnChangeStep = document.querySelector('#step_change'),
+
+                outputEncry = document.querySelector('.output_value'),
+                outputNoencry = document.querySelector('.output_value_1'),
+
+                arrRuLow = ['а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я'],
+                arrRuUp = ['А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'],
+                arrEnLow = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
+                arrEnUp = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
+                arrNumb = ['0','1','2','3','4','5','6','7','8','9'];
+
+            var step = 2;
+
+            btnChangeStep.addEventListener('click', function(){
+                if(inputChangeStep.value != ''){
+                    step = Number(inputChangeStep.value);
+                    alert("Шаг был изменен");
+                }else{
+                    alert("Шаг не может являться пустотой");
+                }
+                
+            });
+
+            btnEncry.addEventListener('click', function(){
+
+                let valueInput = inputEncry.value;
+                let outputValue = '';
+
+                for(let i=0; i < valueInput.length; i++){
+                    // console.log(valueInput[i]);
+
+                    let lengthOutVal = outputValue.length;
+
+                    for(let j=0; j < arrRuLow.length; j++){
+
+                        switch (valueInput[i]) {
+                            case arrRuLow[j]:{
+
+                                if((j+step) >= arrRuLow.length){
+                                    outputValue += arrRuLow[(j+step) - arrRuLow.length];
+                                }else{
+                                    outputValue += arrRuLow[j+step];
+                                }
+
+                                break;
+                            }
+
+                            case arrRuUp[j]:{
+                            
+                                if((j+step) >= arrRuUp.length){
+                                    outputValue += arrRuUp[(j+step) - arrRuLow.length];
+                                }else{
+                                    outputValue += arrRuUp[j+step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+                    for(let j=0; j < arrEnLow.length; j++){
+
+                        switch (valueInput[i]) {
+                            case arrEnLow[j]:{
+
+                                if((j+step) >= arrEnLow.length){
+                                    outputValue += arrEnLow[(j+step) - arrEnLow.length];
+                                }else{
+                                    outputValue += arrEnLow[j+step];
+                                }
+
+                                break;
+                            }
+
+                            case arrEnUp[j]:{
+                            
+                                if((j+step) >= arrEnUp.length){
+                                    outputValue += arrEnUp[(j+step) - arrEnUp.length];
+                                }else{
+                                    outputValue += arrEnUp[j+step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+                    for(let j=0; j < arrNumb.length; j++){
+
+                        switch (valueInput[i]) {
+
+                            case arrNumb[j]:{
+
+                                if((j+step) >= arrNumb.length){
+                                    outputValue += arrNumb[(j+step) - arrNumb.length];
+                                }else{
+                                    outputValue += arrNumb[j+step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                    if(lengthOutVal == outputValue.length){
+                        outputValue += valueInput[i];
+                    }
+
+                }
+                
+
+                outputEncry.innerHTML = outputValue;
+
+            });
+
+            btnNoencry.addEventListener('click', function(){
+
+                let valueInput = inputNoencry.value;
+                let outputValue = '';
+
+                for(let i=0; i < valueInput.length; i++){
+                    // console.log(valueInput[i]);
+
+                    let lengthOutVal = outputValue.length;
+
+                    for(let j=0; j < arrRuLow.length; j++){
+
+                        switch (valueInput[i]) {
+                            case arrRuLow[j]:{
+
+                                if((j-step) < 0){
+                                    outputValue += arrRuLow[arrRuLow.length + (j-step)];
+                                }else{
+                                    outputValue += arrRuLow[j-step];
+                                }
+
+                                break;
+                            }
+
+                            case arrRuUp[j]:{
+                            
+                                if((j-step) < 0){
+                                    outputValue += arrRuUp[arrRuLow.length + (j-step)];
+                                }else{
+                                    outputValue += arrRuUp[j-step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+                    for(let j=0; j < arrEnLow.length; j++){
+
+                        switch (valueInput[i]) {
+                            case arrEnLow[j]:{
+
+                                if((j-step) < 0){
+                                    outputValue += arrEnLow[arrEnLow.length + (j-step)];
+                                }else{
+                                    outputValue += arrEnLow[j-step];
+                                }
+
+                                break;
+                            }
+
+                            case arrEnUp[j]:{
+                            
+                                if((j-step) < 0){
+                                    outputValue += arrEnUp[arrEnUp.length + (j-step)];
+                                }else{
+                                    outputValue += arrEnUp[j-step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+                    for(let j=0; j < arrNumb.length; j++){
+
+                        switch (valueInput[i]) {
+
+                            case arrNumb[j]:{
+
+                                if((j-step) < 0){
+                                    outputValue += arrNumb[arrNumb.length + (j-step)];
+                                }else{
+                                    outputValue += arrNumb[j-step];
+                                }
+
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                    if(lengthOutVal == outputValue.length){
+                        outputValue += valueInput[i];
+                    }
+
+                }
+
+
+                outputNoencry.innerHTML = outputValue;
+
+            });
+              
+        }); 
 
     </script>
 
